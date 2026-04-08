@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Kartu Profil Digital | Portfolio Diri</title>
+    <!-- Google Fonts & Font Awesome (untuk ikon keren) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(145deg, #0f172a 0%, #1e293b 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Efek background bintang / titik dinamis */
+        body::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(#ffffff20 1px, transparent 1px);
+            background-size: 40px 40px;
+            pointer-events: none;
+            opacity: 0.5;
+        }
+
+        /* Container utama kartu */
+        .card-container {
+            max-width: 500px;
+            width: 100%;
+            z-index: 2;
+            perspective: 1200px;
+        }
+
+        /* Kartu dengan efek glassmorphism + animasi hover */
+        .profile-card {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(12px);
+            border-radius: 2.5rem;
+            padding: 2rem 1.8rem 2rem 1.8rem;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.1);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .profile-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 35px 55px rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Area avatar dengan efek gradien */
+        .avatar-wrapper {
+            text-align: center;
+            margin-bottom: 1.2rem;
+            position: relative;
+        }
+
+        .avatar {
+            width: 130px;
+            height: 130px;
+            background: linear-gradient(135deg, #3b82f6, #a855f7);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            box-shadow: 0 15px 30px -8px rgba(0, 0, 0, 0.5);
+            border: 3px solid rgba(255, 255, 255, 0.7);
+            transition: all 0.3s;
+        }
+
+        .avatar i {
+            font-size: 4rem;
+            color: white;
+            filter: drop-shadow(2px 4px 6px rgba(0,0,0,0.3));
+        }
+
+        .avatar:hover {
+            transform: scale(1.02);
+            border-color: #facc15;
+        }
+
+        /* Nama & jabatan */
+        .name {
+            font-size: 1.9rem;
+            font-weight: 700;
+            text-align: center;
+            color: #ffffff;
+            letter-spacing: -0.3px;
+            margin-top: 0.5rem;
+            background: linear-gradient(to right, #ffffff, #cbd5e1);
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+
+        .title {
+            text-align: center;
+            color: #cbd5e6;
+            font-weight: 500;
+            font-size: 1rem;
+            background: rgba(59,130,246,0.2);
+            display: inline-block;
+            width: auto;
+            margin: 0.5rem auto 0 auto;
+            padding: 0.25rem 1rem;
+            border-radius: 40px;
+            backdrop-filter: blur(4px);
+            letter-spacing: 0.3px;
+        }
+
+        /* Bio / deskripsi singkat */
+        .bio {
+            text-align: center;
+            color: #e2e8f0;
+            font-size: 0.9rem;
+            margin: 1rem 0 1.5rem 0;
+            line-height: 1.5;
+            padding: 0 0.5rem;
+            font-weight: 400;
+        }
+
+        /* Informasi detail (grid) */
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1.8rem 0 1.5rem 0;
+        }
+
+        .info-item {
+            background: rgba(15, 23, 42, 0.5);
+            border-radius: 1.2rem;
+            padding: 0.8rem 0.5rem;
+            text-align: center;
+            transition: all 0.2s;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .info-item i {
+            font-size: 1.3rem;
+            color: #60a5fa;
+            margin-bottom: 0.3rem;
+            display: inline-block;
+        }
+
+        .info-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 500;
+            color: #94a3b8;
+        }
+
+        .info-value {
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #f1f5f9;
+            margin-top: 0.2rem;
+            word-break: break-word;
+        }
+
+        /* Tombol kontak sosial media */
+        .social-section {
+            text-align: center;
+            margin: 1.5rem 0 1.2rem 0;
+        }
+
+        .social-title {
+            font-size: 0.8rem;
+            color: #a0afc0;
+            margin-bottom: 0.7rem;
+            letter-spacing: 1px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+        }
+
+        .social-btn {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(5px);
+            width: 44px;
+            height: 44px;
+            border-radius: 30px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            color: #e2e8f0;
+            transition: all 0.25s;
+            text-decoration: none;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .social-btn:hover {
+            transform: translateY(-4px);
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+            box-shadow: 0 8px 18px rgba(59,130,246,0.4);
+        }
+
+        /* Tombol aksi (CV / Hubungi) */
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin: 1rem 0 0.5rem 0;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 0.75rem 0;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            border: none;
+            cursor: pointer;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-family: 'Inter', sans-serif;
+            background: rgba(255,255,255,0.1);
+            color: #f8fafc;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .btn-primary {
+            background: linear-gradient(95deg, #2563eb, #7c3aed);
+            border: none;
+            box-shadow: 0 4px 10px rgba(37,99,235,0.3);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(95deg, #3b82f6, #8b5cf6);
+            transform: scale(1.02);
+            box-shadow: 0 8px 20px rgba(59,130,246,0.5);
+        }
+
+        .btn-outline:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Efek footer & timestamp */
+        .footer-note {
+            text-align: center;
+            font-size: 0.7rem;
+            margin-top: 1.6rem;
+            color: #7e8aa2;
+            border-top: 1px dashed rgba(255,255,255,0.1);
+            padding-top: 1rem;
+        }
+
+        /* Responsif */
+        @media (max-width: 480px) {
+            body {
+                padding: 1rem;
+            }
+            .profile-card {
+                padding: 1.5rem;
+            }
+            .info-grid {
+                gap: 0.7rem;
+            }
+            .name {
+                font-size: 1.6rem;
+            }
+            .avatar {
+                width: 100px;
+                height: 100px;
+            }
+            .avatar i {
+                font-size: 3rem;
+            }
+        }
+
+        /* animasi fade in */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .profile-card {
+            animation: fadeUp 0.7s ease-out;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card-container">
+    <div class="profile-card">
+        <!-- Area Avatar dengan ikon user modern -->
+        <div class="avatar-wrapper">
+            <div class="avatar">
+                <i class="fas fa-user-astronaut"></i>
+            </div>
+        </div>
+
+        <!-- Nama & gelar -->
+        <div class="name">Budi Santoso</div>
+        <div style="text-align: center;">
+            <span class="title"><i class="fas fa-code" style="margin-right: 6px;"></i> Fullstack Developer & UI Enthusiast</span>
+        </div>
+
+        <!-- Bio singkat -->
+        <div class="bio">
+            Membangun pengalaman digital yang bermakna dengan kode dan kreativitas.  
+            🚀 Terbuka untuk kolaborasi & proyek inovatif.
+        </div>
+
+        <!-- Grid data diri (penting) -->
+        <div class="info-grid">
+            <div class="info-item">
+                <i class="fas fa-map-marker-alt"></i>
+                <div class="info-label">Lokasi</div>
+                <div class="info-value">Jakarta, Indonesia</div>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-envelope"></i>
+                <div class="info-label">Email</div>
+                <div class="info-value">budi.santoso@dev.me</div>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-phone-alt"></i>
+                <div class="info-label">Telepon</div>
+                <div class="info-value">+62 812 3456 7890</div>
+            </div>
+            <div class="info-item">
+                <i class="fas fa-calendar-alt"></i>
+                <div class="info-label">Bergabung</div>
+                <div class="info-value">2021 - Sekarang</div>
+            </div>
+        </div>
+
+        <!-- Social media / platform -->
+        <div class="social-section">
+            <div class="social-title"><i class="fas fa-share-alt"></i>   Temukan Saya di</div>
+            <div class="social-links">
+                <a href="#" class="social-btn" id="githubLink" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="#" class="social-btn" id="linkedinLink" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#" class="social-btn" id="instagramLink" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="social-btn" id="twitterLink" target="_blank"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="social-btn" id="portfolioLink" target="_blank"><i class="fas fa-briefcase"></i></a>
+            </div>
+        </div>
+
+        <!-- Tombol aksi interaktif dengan JS (alert & efek) -->
+        <div class="action-buttons">
+            <button class="btn btn-primary" id="contactBtn"><i class="fas fa-paper-plane"></i> Hubungi Saya</button>
+            <button class="btn btn-outline" id="cvBtn"><i class="fas fa-download"></i> Download CV</button>
+        </div>
+
+        <div class="footer-note">
+            <i class="far fa-smile-wink"></i> "Kode yang baik adalah cerita, bukan hanya instruksi"
+        </div>
+    </div>
+</div>
+
+<!-- JavaScript (JF = JavaScript Framework? tetap vanilla JS tapi modern & interaktif) -->
+<script>
+    (function() {
+        // Data diri lebih dalam (bisa juga dipanggil saat interaksi)
+        const profileData = {
+            fullName: "Budi Santoso",
+            email: "budi.santoso@dev.me",
+            phone: "+62 812 3456 7890",
+            job: "Fullstack Developer",
+            portfolio: "https://budisantoso.dev",
+            github: "https://github.com/budisantoso",
+            linkedin: "https://linkedin.com/in/budi-santoso",
+            instagram: "https://instagram.com/budi.code",
+            twitter: "https://twitter.com/budisantoso"
+        };
+
+        // 1. Tombol Hubungi Saya -> menampilkan alert dengan info kontak
+        const contactBtn = document.getElementById('contactBtn');
+        if (contactBtn) {
+            contactBtn.addEventListener('click', () => {
+                // Efek interaktif + notifikasi menarik
+                alert(`📬 Kontak Lengkap:\n\nNama: ${profileData.fullName}\nEmail: ${profileData.email}\nTelepon: ${profileData.phone}\nWebsite: ${profileData.portfolio}\n\nTerima kasih sudah menghubungi! ✨`);
+                // Bisa juga tambahkan efek visual small feedback
+                contactBtn.style.transform = "scale(0.98)";
+                setTimeout(() => { contactBtn.style.transform = ""; }, 150);
+            });
+        }
+
+        // 2. Tombol Download CV -> simulasi download file (menggunakan Blob)
+        const cvBtn = document.getElementById('cvBtn');
+        if (cvBtn) {
+            cvBtn.addEventListener('click', () => {
+                // Membuat konten CV sederhana dalam bentuk .txt atau bisa juga .md (simulasi)
+                const cvContent = `=== CURRICULUM VITAE ===\n\nNama Lengkap: ${profileData.fullName}\nPosisi: ${profileData.job}\nEmail: ${profileData.email}\nTelepon: ${profileData.phone}\nLokasi: Jakarta, Indonesia\n\nPendidikan:\n- Sarjana Teknik Informatika, Universitas Indonesia (2017-2021)\n\nPengalaman Kerja:\n- Frontend Developer di TechInnova (2021-2023)\n- Fullstack Developer Freelance (2023-sekarang)\n\nSkill:\nHTML, CSS, JavaScript, React, Node.js, Python, UI/UX Design\n\nPortfolio: ${profileData.portfolio}\n\n“Terus belajar dan berbagi.”\n\n--- Digital CV generated from Profile Card ---`;
+                
+                // Membuat blob dan trigger download
+                const blob = new Blob([cvContent], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `CV_${profileData.fullName.replace(/\s/g, '_')}.txt`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                // Feedback tombol
+                cvBtn.innerHTML = '<i class="fas fa-check"></i> Terunduh!';
+                setTimeout(() => {
+                    cvBtn.innerHTML = '<i class="fas fa-download"></i> Download CV';
+                }, 1800);
+            });
+        }
+
+        // 3. Mengatur link social media berdasarkan data diri (supaya terarah ke akun asli)
+        const githubLink = document.getElementById('githubLink');
+        const linkedinLink = document.getElementById('linkedinLink');
+        const instagramLink = document.getElementById('instagramLink');
+        const twitterLink = document.getElementById('twitterLink');
+        const portfolioLink = document.getElementById('portfolioLink');
+        
+        if (githubLink) githubLink.href = profileData.github;
+        if (linkedinLink) linkedinLink.href = profileData.linkedin;
+        if (instagramLink) instagramLink.href = profileData.instagram;
+        if (twitterLink) twitterLink.href = profileData.twitter;
+        if (portfolioLink) portfolioLink.href = profileData.portfolio;
+
+        // Menambahkan event listener untuk sosial media agar memberikan efek notifikasi ringan (opsional)
+        const allSocialBtns = document.querySelectorAll('.social-btn');
+        allSocialBtns.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                // Hanya tambahkan efek, tidak mencegah navigasi
+                const platform = btn.querySelector('i')?.className || '';
+                console.log(`Membuka tautan: ${btn.href}`);
+                // efek kilat kecil (tidak mengganggu)
+                btn.style.transform = "scale(0.9)";
+                setTimeout(() => { btn.style.transform = ""; }, 150);
+            });
+        });
+
+        // Bonus: efek hover yang smooth pada info-item
+        const infoItems = document.querySelectorAll('.info-item');
+        infoItems.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                item.style.backgroundColor = "rgba(59, 130, 246, 0.2)";
+                item.style.borderColor = "rgba(96, 165, 250, 0.5)";
+                item.style.transition = "0.2s";
+            });
+            item.addEventListener('mouseleave', () => {
+                item.style.backgroundColor = "rgba(15, 23, 42, 0.5)";
+                item.style.borderColor = "rgba(255,255,255,0.05)";
+            });
+        });
+
+        // Menambahkan interaksi tambahan: welcome message di console (developer friendly)
+        console.log(`%c✨ Kartu Profil ${profileData.fullName} siap digunakan ✨`, 'color: #3b82f6; font-size: 14px; font-weight: bold;');
+        console.log("Kontak: ", profileData.email);
+
+        // Animasi tambahan: membuat teks title berkedip lembut saat load (tidak mengganggu)
+        const titleEl = document.querySelector('.title');
+        if (titleEl) {
+            titleEl.style.transition = "0.3s";
+            setInterval(() => {
+                // efek subtle, hanya warna border atau shadow
+                titleEl.style.boxShadow = "0 0 6px rgba(59,130,246,0.3)";
+                setTimeout(() => {
+                    if(titleEl) titleEl.style.boxShadow = "none";
+                }, 600);
+            }, 3000);
+        }
+
+        // tambahan: jika user klik nama, muncul salam
+        const nameEl = document.querySelector('.name');
+        if(nameEl) {
+            nameEl.style.cursor = "pointer";
+            nameEl.addEventListener('click', () => {
+                alert(`👋 Halo! Saya ${profileData.fullName}, senang berkenalan dengan Anda! 🌟`);
+            });
+        }
+    })();
+</script>
+</body>
+</html>
